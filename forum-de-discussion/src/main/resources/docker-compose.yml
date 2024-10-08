@@ -1,0 +1,41 @@
+version: '3.8'
+
+networks:
+  forum-de-discussion:
+    driver: bridge
+
+services:
+  database:
+    image: mysql:9.0.1
+    container_name: fdd-database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - forum-de-discussion
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.1-apache
+    container_name: fdd-pma
+    environment:
+      PMA_HOST: database
+    ports:
+      - "8081:80"
+    networks:
+      - forum-de-discussion
+
+    #app:
+    #image: your-spring-app-image
+    #container_name: fdd-spring-app
+      #networks:
+      #- forum-de-discussion
+      #environment:
+      #SPRING_MAIL_HOST: smtp.gmail.com
+      #SPRING_MAIL_PORT: 587
+      #SPRING_MAIL_USERNAME: jordannandjo11@gmail.com
+      #SPRING_MAIL_PASSWORD: fkceilnotdanzlyi
+      #ports:
+      #- "8080:8080"
+volumes:
+  db_data:

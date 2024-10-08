@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ForumDeDiscussionApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(ForumDeDiscussionApplication.class, args);
 	}
 
