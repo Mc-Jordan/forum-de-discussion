@@ -6,21 +6,27 @@ import com.mc_jordan.forum_de_discussion.entites.Validation;
 import com.mc_jordan.forum_de_discussion.mappers.UtilisateurDTOMapper;
 import com.mc_jordan.forum_de_discussion.repositories.UtilisateurRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Map;
 
+
 @AllArgsConstructor
 @Service
-public class UtilisateurService {
+public class UtilisateurService implements UserDetailsService {
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private   UtilisateurDTOMapper utilisateurDTOMapper;
-    private final UtilisateurRepository utilisateurRepository;
-    private final ValidationService validationService;
+    private PasswordEncoder bCryptPasswordEncoder;
+    private UtilisateurDTOMapper utilisateurDTOMapper;
+    private UtilisateurRepository utilisateurRepository;
+    private ValidationService validationService;
+
 
 
 
@@ -89,5 +95,11 @@ public class UtilisateurService {
             utilisateur.setEstVerifier(true);
         }
         return utilisateurDTOMapper.apply(utilisateur);
+    }
+
+    @Override
+    public Utilisateur loadUserByUsername(String username) throws UsernameNotFoundException {
+        Utilisateur utilisateur=this.utilisateurRepository.findByNomUtilisateur(username).orElseThrow(()-> new UsernameNotFoundException("Cette Utilisateur n'existe pas"));
+        return utilisateur;
     }
 }
