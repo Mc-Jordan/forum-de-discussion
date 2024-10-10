@@ -39,13 +39,19 @@ public class UtilisateurController {
             return new ResponseEntity<>(jwtService.generateToken(authentificationDTO.nomUtilisateur()), HttpStatus.OK);
         }
         return null;
-        //return new ResponseEntity<>(utilisateurService.createUtilisateur(utilisateur), HttpStatus.CREATED);
     }
 
     @PostMapping("/activation")
     public ResponseEntity<UtilisateurDTO> activation(@RequestBody Map<String,String> activation) {
         return new ResponseEntity<>(utilisateurService.activerCompteUtilisateur(activation), HttpStatus.CREATED);
     }
+
+    @PostMapping("/deconnexion")
+    public void deconnexion() {
+        jwtService.deconnexion();
+
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<UtilisateurDTO> update(@RequestBody Utilisateur utilisateur,@PathVariable int id) {
         return new ResponseEntity<>(utilisateurService.updateUtilisateur(utilisateur,id), HttpStatus.OK);

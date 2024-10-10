@@ -1,5 +1,6 @@
 package com.mc_jordan.forum_de_discussion.securite;
 
+import com.mc_jordan.forum_de_discussion.entites.Jwt;
 import com.mc_jordan.forum_de_discussion.services.UtilisateurService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,16 +22,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UtilisateurService utilisateurService;
 
-
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
+        Jwt tokenDansLaBDD = null;
         String token = null;
         String username = null;
+        boolean isExpired = true;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
+            tokenDansLaBDD = this.jwtService.getTokenByValue(token);
+            isExpired= jwtService.isTokenExpired(token);
             username = jwtService.extractUsername(token);
         }
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (
+                !isExpired
+                && tokenDansLaBDD.getUtilisateur().getNomUtilisateur().equals(username)
+                && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = utilisateurService.loadUserByUsername(username);
             if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
