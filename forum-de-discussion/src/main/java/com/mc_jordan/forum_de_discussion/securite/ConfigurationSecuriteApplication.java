@@ -33,6 +33,8 @@ public class ConfigurationSecuriteApplication {
                                         authorize.requestMatchers(HttpMethod.POST,"/auth/inscription").permitAll()
                                                 .requestMatchers(HttpMethod.POST,"/auth/activation").permitAll()
                                                 .requestMatchers(HttpMethod.POST,"/auth/connexion").permitAll()
+                                                .requestMatchers(HttpMethod.POST,"/auth/demande-modification-de-mot-de-passe").permitAll()
+                                                .requestMatchers(HttpMethod.PUT,"/auth/modifier-mot-de-passe").permitAll()
                                                 .anyRequest().authenticated()
                         )
                         .sessionManagement(httpSecuritySessionManagementConfigurer ->

@@ -7,4 +7,8 @@ import java.util.Optional;
 
 public interface ValidationRepository extends JpaRepository<Validation, Integer> {
     Optional<Validation> findByCode(String code);
+
+    boolean existsByUtilisateurId(int id);
+
+    void deleteByUtilisateurId(int id);
 }

@@ -102,4 +102,31 @@ public class UtilisateurService implements UserDetailsService {
         Utilisateur utilisateur=this.utilisateurRepository.findByNomUtilisateur(username).orElseThrow(()-> new UsernameNotFoundException("Cette Utilisateur n'existe pas"));
         return utilisateur;
     }
+
+    public UtilisateurDTO demandeDeModificationDeMotDePasse(Map<String, String> parametres) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(parametres.get("email"))
+                .orElseThrow(() -> new RuntimeException("Cette Utilisateur n'existe pas"));
+        this.validationService.enregistrer(utilisateur);
+        return utilisateurDTOMapper.apply(utilisateur);
+    }
+
+    public UtilisateurDTO modifierMotDePasse(Map<String, String> parametres) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(parametres.get("email"))
+                .orElseThrow(() -> new RuntimeException("Cette Utilisateur n'existe pas"));
+        String code = parametres.get("code");
+        Validation validation = validationService.lireEnFonctionDuCode(code);
+        if (validation==null){
+            throw new RuntimeException("Ce code est inavlide");
+        }
+        else if (validation.getExpire().isBefore(Instant.now())) {
+            throw new RuntimeException("Votre code a expiré");
+        }else if(!validation.getUtilisateur().getEmail().equals(utilisateur.getEmail())){
+            throw new RuntimeException("Inforrmations ambigues");
+        }
+            String password = this.bCryptPasswordEncoder.encode(parametres.get("password"));
+            utilisateur.setMotDePasse(password);
+            return utilisateurDTOMapper.apply(this.utilisateurRepository.save(utilisateur));
+
+
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -25,6 +26,7 @@ public class UtilisateurController {
     private  AuthenticationManager authenticationManager;
     private JwtService jwtService;
 
+
     @PostMapping("/inscription")
     public ResponseEntity<UtilisateurDTO> creerUtilisateur(@RequestBody Utilisateur utilisateur) {
         return new ResponseEntity<>(utilisateurService.createUtilisateur(utilisateur), HttpStatus.CREATED);
@@ -32,9 +34,14 @@ public class UtilisateurController {
 
     @PostMapping("/connexion")
     public ResponseEntity<Map<String,String>> seConnecter(@RequestBody AuthentificationDTO authentificationDTO) {
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
-                (authentificationDTO.nomUtilisateur(), authentificationDTO.motDePasse())
-        );
+        Authentication authenticate = null;
+        try {
+            authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+                    (authentificationDTO.nomUtilisateur(), authentificationDTO.motDePasse())
+            );
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
         if (authenticate.isAuthenticated()) {
             return new ResponseEntity<>(jwtService.generateToken(authentificationDTO.nomUtilisateur()), HttpStatus.OK);
         }
@@ -49,10 +56,20 @@ public class UtilisateurController {
     @PostMapping("/deconnexion")
     public void deconnexion() {
         jwtService.deconnexion();
-
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/demande-modification-de-mot-de-passe")
+    public ResponseEntity<UtilisateurDTO> demandeDeModificationDeMotDePasse(@RequestBody Map<String,String> email) {
+        return new ResponseEntity<>(utilisateurService.demandeDeModificationDeMotDePasse(email), HttpStatus.CREATED);
+    }
+
+
+    @PutMapping("/modifier-mot-de-passe")
+    public ResponseEntity<UtilisateurDTO> modifierMotDePasse(@RequestBody Map<String,String> parametre) {
+        return new ResponseEntity<>(utilisateurService.modifierMotDePasse(parametre), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/modifier-info/{id}")
     public ResponseEntity<UtilisateurDTO> update(@RequestBody Utilisateur utilisateur,@PathVariable int id) {
         return new ResponseEntity<>(utilisateurService.updateUtilisateur(utilisateur,id), HttpStatus.OK);
     }

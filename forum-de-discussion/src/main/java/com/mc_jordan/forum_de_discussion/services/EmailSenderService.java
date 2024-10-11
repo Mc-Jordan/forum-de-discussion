@@ -18,9 +18,9 @@ public class EmailSenderService {
         message.setSubject("Code d'activation sur le forum de discussion de K48");
         message.setFrom("no-reply@Mcjordan.dev");
 
-        message.setText("M./Mme/Mlle. "+validation.getUtilisateur().getNomEtPrenom()+" Votre code d'activation est: "+validation.getCode()+".\n " +
+        message.setText("M./Mme/Mlle. "+validation.getUtilisateur().getNomEtPrenom()+",\n\nVotre code d'activation est: "+validation.getCode()+".\n " +
                 "Ce code expire dans 10 minutes. \n\n\n" +
-                "A Bientot \n\n\n\n\nMcJordan");
+                "A Bientot!!! \n\n                                     McJordan");
         javaMailSender.send(message);
         return "Email sent";
     }
