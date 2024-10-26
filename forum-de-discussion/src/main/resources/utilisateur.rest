@@ -1,0 +1,32 @@
+###
+//inscription
+POST http://localhost:8080/api/auth/inscription
+Content-Type: application/json
+
+{
+  "nomUtilisateur":   "Jacquesfdbfd",
+  "email":    "jaghkg5hgjkhg7iyou@gmail.com",
+  "motDePasse":   "azerty3",
+  "role": {
+    "libelle": "ETUDIANT"
+  },
+  "nomEtPrenom":  "Jacques Siyou"
+}
+###
+
+//activation
+POST http://localhost:8080/api/auth/activation
+Content-Type: application/json
+
+{
+  "code": "235476"
+}
+
+###
+POST http://localhost:8080/api/auth/connexion
+Content-Type: application/json
+
+{
+  "nomUtilisateur":   "Jacquesfdbfd",
+  "motDePasse":   "azerty3"
+}

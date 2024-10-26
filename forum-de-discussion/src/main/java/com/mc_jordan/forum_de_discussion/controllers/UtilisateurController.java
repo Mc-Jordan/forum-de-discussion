@@ -19,13 +19,13 @@ import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(value = "/auth")
 public class UtilisateurController {
     private  UtilisateurService utilisateurService;
     private  AuthenticationManager authenticationManager;
     private JwtService jwtService;
-
 
     @PostMapping("/inscription")
     public ResponseEntity<UtilisateurDTO> creerUtilisateur(@RequestBody Utilisateur utilisateur) {
@@ -40,6 +40,7 @@ public class UtilisateurController {
                     (authentificationDTO.nomUtilisateur(), authentificationDTO.motDePasse())
             );
         } catch (AuthenticationException e) {
+            System.err.println(e.getMessage());
             throw new RuntimeException(e);
         }
         if (authenticate.isAuthenticated()) {
@@ -69,8 +70,14 @@ public class UtilisateurController {
         return new ResponseEntity<>(utilisateurService.modifierMotDePasse(parametre), HttpStatus.CREATED);
     }
 
-    @PutMapping("/modifier-info/{id}")
-    public ResponseEntity<UtilisateurDTO> update(@RequestBody Utilisateur utilisateur,@PathVariable int id) {
-        return new ResponseEntity<>(utilisateurService.updateUtilisateur(utilisateur,id), HttpStatus.OK);
+//    @PutMapping("/modifier-info/{id}")
+//    public ResponseEntity<UtilisateurDTO> update(@RequestBody Utilisateur utilisateur,@PathVariable int id) {
+//        return new ResponseEntity<>(utilisateurService.updateUtilisateur(utilisateur,id), HttpStatus.OK);
+//    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/hello")
+    public  String getString(){
+        return  "hello world";
     }
 }

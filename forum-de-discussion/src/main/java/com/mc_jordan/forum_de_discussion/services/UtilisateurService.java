@@ -6,10 +6,8 @@ import com.mc_jordan.forum_de_discussion.entites.Validation;
 import com.mc_jordan.forum_de_discussion.mappers.UtilisateurDTOMapper;
 import com.mc_jordan.forum_de_discussion.repositories.UtilisateurRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,9 +37,9 @@ public class UtilisateurService implements UserDetailsService {
         }else  if (utilisateurRepository.existsByNomUtilisateur(utilisateur.getNomUtilisateur())){
             throw new RuntimeException("ce nom d'utilisateur est deja associé à un utilisateur");
         }
-        utilisateur.setMotDePasse(this.bCryptPasswordEncoder.encode(utilisateur.getPassword()));
-        utilisateur=utilisateurRepository.save(utilisateur);
-        validationService.enregistrer(utilisateur);
+            utilisateur.setMotDePasse(this.bCryptPasswordEncoder.encode(utilisateur.getPassword()));
+            utilisateur=utilisateurRepository.save(utilisateur);
+            validationService.enregistrer(utilisateur);
         return utilisateurDTOMapper.apply(utilisateur);
     }
 
@@ -86,6 +84,7 @@ public class UtilisateurService implements UserDetailsService {
         Validation validation = validationService.lireEnFonctionDuCode(code);
 
         if (validation==null){
+
             throw new RuntimeException("Ce code est inavlide");
         }
         else if (validation.getExpire().isBefore(Instant.now())) {
@@ -93,8 +92,9 @@ public class UtilisateurService implements UserDetailsService {
         }else {
             utilisateur = utilisateurRepository.findById(validation.getUtilisateur().getId()).orElseThrow(()-> new RuntimeException("Cette Utilisateur n'existe pas"));
             utilisateur.setEstVerifier(true);
+
         }
-        return utilisateurDTOMapper.apply(utilisateur);
+        return utilisateurDTOMapper.apply(this.utilisateurRepository.save(utilisateur));
     }
 
     @Override

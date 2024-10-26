@@ -1,7 +1,6 @@
 package com.mc_jordan.forum_de_discussion.entites;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -62,21 +61,21 @@ public class Utilisateur implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return !this.estVerifier;
+        return this.estVerifier;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !this.estVerifier;
+        return this.estVerifier;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return !this.estVerifier;
+        return this.estVerifier;
     }
 
     @Override
     public boolean isEnabled() {
-        return !this.estVerifier;
+        return this.estVerifier;
     }
 }

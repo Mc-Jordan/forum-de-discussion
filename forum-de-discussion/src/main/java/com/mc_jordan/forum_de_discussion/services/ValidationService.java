@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.UnknownHostException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class ValidationService {
 
 
 @Transactional
-    public void enregistrer(Utilisateur utilisateur) {
+    public void enregistrer(Utilisateur utilisateur){
 
         deleteValidation(utilisateur);
         Validation validation = new Validation();

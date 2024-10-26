@@ -3,7 +3,6 @@ package com.mc_jordan.forum_de_discussion.securite;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,11 +29,12 @@ public class ConfigurationSecuriteApplication {
                         .csrf(AbstractHttpConfigurer::disable)
                         .authorizeHttpRequests(
                                 authorize->
-                                        authorize.requestMatchers(HttpMethod.POST,"/auth/inscription").permitAll()
-                                                .requestMatchers(HttpMethod.POST,"/auth/activation").permitAll()
-                                                .requestMatchers(HttpMethod.POST,"/auth/connexion").permitAll()
-                                                .requestMatchers(HttpMethod.POST,"/auth/demande-modification-de-mot-de-passe").permitAll()
-                                                .requestMatchers(HttpMethod.PUT,"/auth/modifier-mot-de-passe").permitAll()
+                                        authorize.requestMatchers("/auth/inscription").permitAll()
+                                                .requestMatchers("/auth/activation").permitAll()
+                                                .requestMatchers("/auth/connexion").permitAll()
+                                                .requestMatchers("/auth/demande-modification-de-mot-de-passe").permitAll()
+                                                .requestMatchers("/auth/modifier-mot-de-passe").permitAll()
+                                                .requestMatchers("/auth/hello").permitAll()
                                                 .anyRequest().authenticated()
                         )
                         .sessionManagement(httpSecuritySessionManagementConfigurer ->
