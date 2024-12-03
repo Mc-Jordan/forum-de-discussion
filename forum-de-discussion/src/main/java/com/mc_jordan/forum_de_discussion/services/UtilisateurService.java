@@ -50,7 +50,7 @@ public class UtilisateurService implements UserDetailsService {
             //on s'assure qu'une meme addresse mail ne figure pas deux fois dans la base de données
             if ((utilisateurRepository.findAllByEmail(utilisateur.getEmail()).size() == 1 && utilisateur.getEmail().equals(utilisateurFind.getEmail()))
             || (utilisateurRepository.findAllByEmail(utilisateur.getEmail()).isEmpty() && !utilisateur.getEmail().equals(utilisateurFind.getEmail())) ){
-                //on s'assure qu'une meme addresse mail ne figure pas deux fois dans la base de données
+                //on s'assure qu'un nom d'utilisateur ne figure pas deux fois dans la base de données
                 if (((utilisateurRepository.findAllByNomUtilisateur(utilisateur.getUsername()).size() == 1 && utilisateur.getUsername().equals(utilisateurFind.getUsername()))
                         || (utilisateurRepository.findAllByNomUtilisateur(utilisateur.getUsername()).isEmpty() && !utilisateur.getUsername().equals(utilisateurFind.getUsername())) )){
                     if (utilisateur.getEmail()!=null){

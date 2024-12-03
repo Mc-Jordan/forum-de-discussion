@@ -5,21 +5,32 @@ Content-Type: application/json
 
 {
   "nomUtilisateur":   "Jacquesfdbfd",
-  "email":    "jaghkg5hgjkhg7iyou@gmail.com",
+  "email":    "newscam921@gmail.com",
   "motDePasse":   "azerty3",
   "role": {
     "libelle": "ETUDIANT"
   },
-  "nomEtPrenom":  "Jacques Siyou"
+  "nomEtPrenom":  "Jacques Siyou",
+  "photoProfil": "kshdjs.jpg"
 }
 ###
+//modification
+PUT http://localhost:8080/api/auth/modifier-info/7
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJub20iOiJKYWNxdWVzIFNpeW91IiwiZW1haWwiOiJuZXdzY2FtOTIxQGdtYWlsLmNvbSIsImV4cCI6MTczMjcwMjczOCwic3ViIjoiSmFjcXVlc2ZkYmZkIn0.sOt1qaM30esahni7Za5V9FBZ3pQLzxInTHe1L2G8rAw
 
+{
+  "nomEtPrenom":  "New scam"
+}
+
+###
+###
 //activation
 POST http://localhost:8080/api/auth/activation
 Content-Type: application/json
 
 {
-  "code": "235476"
+  "code": "726981"
 }
 
 ###
@@ -30,3 +41,9 @@ Content-Type: application/json
   "nomUtilisateur":   "Jacquesfdbfd",
   "motDePasse":   "azerty3"
 }
+
+###
+POST http://localhost:8080/api/auth/deconnexion
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKYWNxdWVzZmRiZmQiLCJleHAiOjE3MzI3MDAxNjAsImVtYWlsIjoibmV3c2NhbTkyMUBnbWFpbC5jb20iLCJub20iOiJKYWNxdWVzIFNpeW91In0.FqN6Rgo8fNwfFMpcUI86WgFShKJR4pgVIVKQvIdWoG4
+
